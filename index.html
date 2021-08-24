@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result of the Test</title>
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <section class="mainbg">
+        <div class="topborder"></div>
+        <div class="container">
+
+            <div class="flex justify-center mb-100">
+                <h1 class="result-text">RESULT of the test</h1>
+            </div>
+
+            <div class="circle-wpr mb-150">
+                <div class="circle">
+                    <figure class="tool-icon tool-icon--never"></figure>
+                    <p>Never</p>
+                </div>
+                <div class="circle">
+                    <figure class="tool-icon tool-icon--occasional"></figure>
+                    <p>Occasionally</p>
+                </div>
+                <div class="circle">
+                    <figure class="tool-icon tool-icon--time"></figure>
+                    <p>4 hour</p>
+                </div>
+                <div class="circle">
+                    <figure class="tool-icon tool-icon--yearly"></figure>
+                    <p>Yearly</p>
+                </div>
+                <div class="circle">
+                    <figure class="tool-icon tool-icon--never"></figure>
+                    <p>never</p>
+                </div>
+            </div>
+
+            <!-- slide bar -->
+
+            <div class="slider-control">
+                <div class="slider-pointer js-slider-pointer"></div>
+                <div class="slider-wpr">
+                    <div class="slider js-slider">
+                        <div class="slider__slide" data-slide="0"></div>
+                        <div class="slider__slide" data-slide="1"></div>
+                        <div class="slider__slide" data-slide="2"></div>
+                    </div>
+                </div>
+                <div class="flex justify-around">
+                    <span class="relavant">Less Relavant</span>
+                    <span class="relavant">Relavant</span>
+                    <span class="relavant">Very Relavant</span>
+                </div>
+            </div>
+
+            <div class="flex justify-center">
+                <button class="try-again js-try-again">
+                    Try Again
+                    <svg class="" xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="0 0 24 24" width="100%"
+                        fill="#cc0000">
+                        <path d="M0 0h24v24H0V0z" fill="none" />
+                        <path
+                            d="M9.29 6.71c-.39.39-.39 1.02 0 1.41L13.17 12l-3.88 3.88c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l4.59-4.59c.39-.39.39-1.02 0-1.41L10.7 6.7c-.38-.38-1.02-.38-1.41.01z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('document is loaded...')
+
+            // Grab all the element needed for slider positioning
+            const $sliderPointer = document.querySelector('.js-slider-pointer');
+            const $slider = document.querySelector('.js-slider');
+            const $tryAgain = document.querySelector('.js-try-again');
+
+            // Attach a click event on all the three slider and find 
+            // It's index by data-slide attribute. The the formula is
+            // to multiple slide by .50, 1.50 and 2.5 respectively.
+            [...$slider.children].forEach(eachSlide => {
+                eachSlide.addEventListener('click', function () {
+                    const slideIndex = Number(this.getAttribute('data-slide'));
+                    const factor = this.scrollWidth * (slideIndex + 1 / 2);
+                    $sliderPointer.style.transform = `translateX(${factor}px)`;
+                })
+            })
+
+            // The function to be called to reset the first slider
+            const resetFirstSlider = () => {
+                const halfWidth = $slider.children[0].scrollWidth / 2;
+                $sliderPointer.style.transform = `translateX(${halfWidth}px)`;
+            }
+
+            // Clicking on the try again button should reset the first slider
+            $tryAgain.addEventListener('click', resetFirstSlider)
+
+            // This ResizeObserver triggers everytime on devtools resize
+            // and reset the first slider. This is important becasue. When 
+            // the viewport width changes, then we need to re-calculate the 
+            // translateX value to set it appropriately
+            new ResizeObserver(resetFirstSlider).observe($slider)
+        });
+    </script>
+</body>
+
+</html>
